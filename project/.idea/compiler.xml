@@ -2,11 +2,13 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <annotationProcessing>
+      <profile default="true" name="Default" enabled="true" />
       <profile name="Maven default annotation processors profile" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="msg" />
+        <module name="evaluation" />
         <module name="common" />
         <module name="user" />
         <module name="order" />
@@ -16,6 +18,7 @@
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="common" options="-parameters" />
+      <module name="evaluation" options="-parameters" />
       <module name="msg" options="-parameters" />
       <module name="order" options="-parameters" />
       <module name="project" options="" />

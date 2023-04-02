@@ -2,30 +2,45 @@ package com.project.controller;
 
 import com.project.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Collection;
+import java.util.Enumeration;
+
 
 @RestController
 @RequestMapping("/user")
+@CrossOrigin
 public class UserController {
     @Autowired
     private UserService userService;
+    /**
+     * 发送邮箱验证码
+     */
+    @GetMapping("/getcode")
+    public Result getcode(HttpServletRequest request){
+        userService.getcode(request);
+        return new Result(null,200,"验证码发送成功");
+    }
 
     /**
      * 实现邮箱验证码注册
      */
     @PostMapping("/register")
     public Result register(HttpServletRequest request){
-        return null;
+        int a = userService.register(request);
+        if(a == 1){
+            return new Result(null,400,"验证码错误");
+        }else if(a == 2){
+            return new Result(null,300,"用户已存在");
+        }
+        return new Result(null,200,"注册成功");
     }
     /**
      * 实现用户登录
      */
-    @GetMapping("/login")
+    @PostMapping("/login")
     public Result login(HttpServletRequest request){
         Integer stuId = Integer.valueOf(request.getParameter("stuId"));
         String password = request.getParameter("password");

@@ -1,9 +1,9 @@
 server:
-  port: 8011
+  port: 8051
 
 spring:
   application:
-    name: service-order
+    name: service-eval
   datasource:
     driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://localhost:5432/postgres
