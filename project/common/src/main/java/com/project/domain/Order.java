@@ -12,7 +12,7 @@ public class Order {
     private Integer orderId; //订单号
     private Integer client; //付钱的用户id
     private Integer server; //得钱的用户id
-    private String date; //订单发起时间
+    private Date date; //订单发起时间
     private String description; //订单描述信息
     private Integer reward; //悬赏金额
     private Integer type; //订单类型，1表示帮带外卖，2表示帮作业，3表示跳蚤市场
