@@ -16,7 +16,7 @@ import java.util.Map;
 @Service
 public class UserService {
     @Autowired
-    private UserDao userDao;
+    private UserDao userDao ;
     @Autowired
     private JavaMailSender mailSender;
     private Map<String,String> map = new HashMap<>();

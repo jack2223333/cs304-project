@@ -5,9 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Collection;
-import java.util.Enumeration;
-
 
 @RestController
 @RequestMapping("/user")
@@ -44,7 +41,7 @@ public class UserController {
     public Result login(HttpServletRequest request){
         Integer stuId = Integer.valueOf(request.getParameter("stuId"));
         String password = request.getParameter("password");
-        return userService.login(stuId,password) ? new Result(null,200,"登录成功") : new Result(null,400,"登录失败");
+        return userService.login(stuId,password) ? new Result(stuId,200,"登录成功") : new Result(null,400,"登录失败");
     }
     /**
      * 实现用户修改密码
