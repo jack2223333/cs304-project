@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -62,16 +63,28 @@ public class OrderService {
         return null;
     }
     public List<Order> allServedOrderFromClient(HttpServletRequest request){
-        Integer type= Integer.valueOf(request.getParameter("type"));
+        String typeStr= request.getParameter("type");
+        String[] typeList=typeStr.split(",");
+        List<Order> result=new ArrayList<>();
         Integer client= Integer.valueOf(request.getParameter("client"));
         Integer task_status= Integer.valueOf(request.getParameter("status"));
-        return orderDao.getByClientAndStatus(type,client,task_status);
+        for (String s : typeList) {
+            List<Order> cur = orderDao.getByClientAndStatus(Integer.valueOf(s), client, task_status);
+            result.addAll(cur);
+        }
+        return result;
     }
     public List<Order> allTakeOrderFromServer(HttpServletRequest request){
-        Integer type= Integer.valueOf(request.getParameter("type"));
+        String typeStr= request.getParameter("type");
+        String[] typeList=typeStr.split(",");
+        List<Order> result=new ArrayList<>();
         Integer server= Integer.valueOf(request.getParameter("server"));
         Integer status= Integer.valueOf(request.getParameter("status"));
-        return orderDao.getByServerAndStatus(type,server,status);
+        for (String s : typeList) {
+            List<Order> cur = orderDao.getByClientAndStatus(Integer.valueOf(s), server, status);
+            result.addAll(cur);
+        }
+        return result;
     }
     public boolean takeOrder(HttpServletRequest request){
         Integer type= Integer.valueOf(request.getParameter("type"));
