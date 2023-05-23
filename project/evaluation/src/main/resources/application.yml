@@ -9,7 +9,13 @@ spring:
     url: jdbc:postgresql://localhost:5432/postgres
     username: postgres
     password: txl20020705@
+  http:
+    multipart:
+      max-file-size: 20MB
   cloud:
     nacos:
       discovery:
         server-addr: localhost:8848
+  servlet:
+    multipart:
+      enabled: true

@@ -12,6 +12,7 @@
         <module name="common" />
         <module name="user" />
         <module name="order" />
+        <module name="module" />
       </profile>
     </annotationProcessing>
   </component>

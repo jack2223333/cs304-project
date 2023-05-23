@@ -6,9 +6,9 @@ spring:
     name: service-order
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://yangfan.cool:54321/postgres
+    url: jdbc:postgresql://localhost:5432/postgres
     username: postgres
-    password: cs304_se_1113
+    password: txl20020705@
   cloud:
     nacos:
       discovery:
