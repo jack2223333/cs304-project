@@ -11,11 +11,13 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/eval")
+@CrossOrigin
 public class EvalController {
     @Autowired
     private EvalService evalService;
     @PostMapping("/add")
     public Result addEval(HttpServletRequest request,@RequestParam(value = "file",required = false) MultipartFile file){
+        System.out.println(request.getParameter("text"));
         return evalService.addEval(request,file) ? new Result(null,200,"评论成功") : new Result(null,400,"评论失败");
     }
     @GetMapping("/get")
