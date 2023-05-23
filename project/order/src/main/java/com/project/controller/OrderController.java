@@ -10,6 +10,7 @@ import java.text.ParseException;
 
 @RestController
 @RequestMapping("/user")
+@CrossOrigin
 public class OrderController {
     @Autowired
     private OrderService orderService;
@@ -28,22 +29,40 @@ public class OrderController {
     public Result deleteOrder(HttpServletRequest request){
         int status= Integer.parseInt(request.getParameter("status"));
         Integer id= Integer.valueOf(request.getParameter("orderId"));
-        if(status==2){
-            new Result(null,400,"已被接单，不可取消");
-        }else if(status==3){
-            new Result(null,400,"订单已完成，不可取消");
-        }
-        if (orderService.deleteOrder(id)){
-            return new Result(null,200,"成功取消订单");
+        Integer client_id= Integer.valueOf(request.getParameter("client"));
+        if (orderService.checkIdentity(id,client_id)){
+            if(status==2){
+                return new Result(null,400,"已被接单，不可取消");
+            }else if(status==3){
+                return new Result(null,400,"订单已完成，不可取消");
+            }else {
+                orderService.deleteOrder(id);
+                return new Result(null,200,"成功取消订单");
+            }
         }else {
-            return new Result(null,400,"该订单不存在");
+            return new Result(null,400,"该用户不是发布者，没有权限删除");
         }
     }
     /**
      * 修改订单状态，比如，一个订单最开始是未被接，被接了之后就变成2状态，在用户确认已经结束订单时订单变成3状态
      */
-    @PostMapping("/update")
-    public Result updateOrder(HttpServletRequest request){
+    @PostMapping("/takeorder")
+    public Result takeOrder(HttpServletRequest request){
+        if(orderService.takeOrder(request)){
+            return new Result(null,200,"成功接单");
+        }
+        return new Result(null,400,"余额不足，购买失败");
+    }
+    @PostMapping("/completeorder")
+    public Result completeOrder(HttpServletRequest request){
+        orderService.completeOrder(request);
+        return new Result(null,200,"订单完成");
+    }
+    /**
+     * 修改订单基本信息，比如，金额，描述等
+     */
+    @PostMapping("/updateinfo")
+    public Result updateOrderInfo(HttpServletRequest request){
         Integer status=orderService.modifyStatus(request);
         if(status==3){
             autoRedirect();
@@ -63,9 +82,13 @@ public class OrderController {
      * 在接单页面上，显示的应该是未被接的订单，用户通过类型筛选，可以选出3类不同的可以接的单
      * 在用户个人中心，可以显示已经完成的历史订单，即状态为3的订单，也可以显示正在进行的
      */
-    @PostMapping("/select/noserver")
+    @PostMapping("/select/bytype")
     public Result getNonserverByTypeAndStatus(HttpServletRequest request){
-        return new Result(orderService.allNonserverOrder(request),200,"筛选成功");
+        return new Result(orderService.allItemByType(request),200,"筛选成功");
+    }
+    @PostMapping("/select/bylabel")
+    public Result getNonserverByTypeAndLabelAndStatus(HttpServletRequest request){
+        return new Result(orderService.allItemByTypeAndLabel(request),200,"筛选成功");
     }
     @PostMapping("/select/client")
     public Result getServedOrderByTypeAndStatus(HttpServletRequest request){
