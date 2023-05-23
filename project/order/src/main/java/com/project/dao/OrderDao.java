@@ -9,7 +9,7 @@ import java.util.List;
 @Mapper
 public interface OrderDao {
     @Options(useGeneratedKeys = true, keyProperty = "orderId")
-    @Insert("insert into orders(client_id,server_id,pub_date,description,reward,task_type,status,label,picture) values (#{client_id},null,#{pub_date},#{description},#{reward},#{task_type},#{status},#{label},#{picture} )")
+    @Insert("insert into orders(client_id,server_id,pub_date,description,reward,task_type,status,label,picture,title) values (#{client_id},null,#{pub_date},#{description},#{reward},#{task_type},#{status},#{label},#{picture},#{title}  )")
     void add(Order order);
     @Select("select money from users where stu_id= #{client}")
     double getMoneyById(Integer client);

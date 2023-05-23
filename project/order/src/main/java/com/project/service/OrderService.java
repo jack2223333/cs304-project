@@ -39,6 +39,8 @@ public class OrderService {
         order.setLabel(label);
         String picture=request.getParameter("picture");
         order.setPicture(picture);
+        String title=request.getParameter("title");
+        order.setTitle(title);
         orderDao.add(order);
         return true;
     }

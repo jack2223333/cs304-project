@@ -19,5 +19,6 @@ public class Order {
     private Integer status; //订单状态 1表示订单未被接，2表示订单已被接但没有确认完成，3表示订单已完成
     private String label; //订单大类别下小分类
     private String picture; //存储跳蚤市场商品图片地址
+    private String title; //发布商品或任务标题
 
 }
