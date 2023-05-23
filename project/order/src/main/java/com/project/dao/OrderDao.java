@@ -18,11 +18,11 @@ public interface OrderDao {
     @Update("update users set money = money + #{reward} where stu_id= #{id}")
     void increaseMoney(@Param("id")Integer id,@Param("reward")double reward);
 
-    @Select("select * from orders where client_id = #{client} and status=#{task_status}")
-    List<Order> getByClientAndStatus(@Param("client")Integer client,@Param("task_status")Integer task_status);
+    @Select("select * from orders where task_type= #{task_type} and client_id = #{client} and status=#{task_status}")
+    List<Order> getByClientAndStatus(@Param("task_type")Integer task_type,@Param("client")Integer client,@Param("task_status")Integer task_status);
 
-    @Select("select * from orders where server_id = #{server} and status = #{status}")
-    List<Order> getByServerAndStatus(@Param("server")Integer server,@Param("status")Integer status);
+    @Select("select * from orders where task_type= #{task_type} and server_id = #{server} and status = #{status}")
+    List<Order> getByServerAndStatus(@Param("task_type")Integer task_type,@Param("server")Integer server,@Param("status")Integer status);
 
     @Select("select * from orders where task_type = #{task_type} and status = #{status}")
     List<Order> getByTypeAndStatus(@Param("task_type")Integer task_type,@Param("status")Integer status);

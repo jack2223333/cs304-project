@@ -62,14 +62,16 @@ public class OrderService {
         return null;
     }
     public List<Order> allServedOrderFromClient(HttpServletRequest request){
+        Integer type= Integer.valueOf(request.getParameter("type"));
         Integer client= Integer.valueOf(request.getParameter("client"));
         Integer task_status= Integer.valueOf(request.getParameter("status"));
-        return orderDao.getByClientAndStatus(client,task_status);
+        return orderDao.getByClientAndStatus(type,client,task_status);
     }
     public List<Order> allTakeOrderFromServer(HttpServletRequest request){
+        Integer type= Integer.valueOf(request.getParameter("type"));
         Integer server= Integer.valueOf(request.getParameter("server"));
         Integer status= Integer.valueOf(request.getParameter("status"));
-        return orderDao.getByServerAndStatus(server,status);
+        return orderDao.getByServerAndStatus(type,server,status);
     }
     public boolean takeOrder(HttpServletRequest request){
         Integer type= Integer.valueOf(request.getParameter("type"));
