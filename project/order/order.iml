@@ -63,5 +63,6 @@
     <orderEntry type="library" name="Maven: org.springframework:spring-tx:5.2.8.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.postgresql:postgresql:42.6.0" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: org.checkerframework:checker-qual:3.31.0" level="project" />
+    <orderEntry type="library" name="Maven: com.alibaba:fastjson:1.1.23" level="project" />
   </component>
 </module>

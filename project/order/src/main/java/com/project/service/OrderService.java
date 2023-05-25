@@ -1,7 +1,9 @@
 package com.project.service;
 
+import com.alibaba.fastjson.JSON;
 import com.project.dao.OrderDao;
 import com.project.domain.Order;
+import com.project.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -9,9 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class OrderService {
@@ -63,25 +63,25 @@ public class OrderService {
         return null;
     }
     public List<Order> allServedOrderFromClient(HttpServletRequest request){
-        String typeStr= request.getParameter("type");
+        String typeStr= request.getParameter("status");
         String[] typeList=typeStr.split(",");
         List<Order> result=new ArrayList<>();
         Integer client= Integer.valueOf(request.getParameter("client"));
-        Integer task_status= Integer.valueOf(request.getParameter("status"));
+        Integer type= Integer.valueOf(request.getParameter("type"));
         for (String s : typeList) {
-            List<Order> cur = orderDao.getByClientAndStatus(Integer.valueOf(s), client, task_status);
+            List<Order> cur = orderDao.getByClientAndStatus(type, client, Integer.valueOf(s));
             result.addAll(cur);
         }
         return result;
     }
     public List<Order> allTakeOrderFromServer(HttpServletRequest request){
-        String typeStr= request.getParameter("type");
+        String typeStr= request.getParameter("status");
         String[] typeList=typeStr.split(",");
         List<Order> result=new ArrayList<>();
         Integer server= Integer.valueOf(request.getParameter("server"));
-        Integer status= Integer.valueOf(request.getParameter("status"));
+        Integer type= Integer.valueOf(request.getParameter("type"));
         for (String s : typeList) {
-            List<Order> cur = orderDao.getByClientAndStatus(Integer.valueOf(s), server, status);
+            List<Order> cur = orderDao.getByServerAndStatus(type, server, Integer.valueOf(s));
             result.addAll(cur);
         }
         return result;
@@ -102,6 +102,7 @@ public class OrderService {
             }
         }
         orderDao.modifyStatusToTwo(id);
+        orderDao.modifyServer(id,server);
         return true;
     }
     public void completeOrder(HttpServletRequest request){
@@ -124,6 +125,22 @@ public class OrderService {
     public void deleteOrder(Integer id){
         orderDao.delete(id);
     }
+    public String checkOrder(HttpServletRequest request){
+        Integer id= Integer.valueOf(request.getParameter("orderId"));
+        Order cur=orderDao.getOrderById(id);
+        User curU=orderDao.getUserById(cur.getClient_id());
+        Map<String,Object> map=new HashMap<>();
+        map.put("picture",cur.getPicture());
+        map.put("cur.getPicture()",cur.getDescription());
+        map.put("reward",cur.getReward());
+        map.put("photo",curU.getPhoto());
+        map.put("name",curU.getName());
+        map.put("mark",curU.getMark());
+
+        String json= JSON.toJSONString(map);
+        return json;
+    }
+
 
     //辅助方法，判断某人是否有权限删除订单
     public boolean checkIdentity(Integer orderId,Integer clientId){

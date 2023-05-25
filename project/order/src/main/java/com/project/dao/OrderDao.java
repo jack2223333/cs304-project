@@ -1,6 +1,7 @@
 package com.project.dao;
 
 import com.project.domain.Order;
+import com.project.domain.User;
 import org.apache.ibatis.annotations.*;
 
 import java.util.Date;
@@ -13,6 +14,8 @@ public interface OrderDao {
     void add(Order order);
     @Select("select money from users where stu_id= #{client}")
     double getMoneyById(Integer client);
+    @Select("select * from users where stu_id= #{client}")
+    User getUserById(Integer client);
     @Update("update users set money = money - #{reward} where stu_id= #{id}")
     void reduceMoney(@Param("id")Integer id,@Param("reward")double reward);
     @Update("update users set money = money + #{reward} where stu_id= #{id}")
@@ -37,9 +40,13 @@ public interface OrderDao {
     void modifyStatusToTwo(Integer id);
     @Update("update orders set status = 3 where order_id= #{id}")
     void modifyStatusToThree(Integer id);
+    @Update("update orders set server_id = #{id2}  where order_id= #{id}")
+    void modifyServer(@Param("id")Integer id,@Param("server")Integer id2);
 
     @Select("select * from orders where order_id= #{order} and client_id= #{client}")
     List<Order> getStatusById(@Param("order")Integer id1,@Param("client")Integer id2);
+    @Select("select * from orders where order_id= #{id}")
+    Order getOrderById(Integer id);
 
     @Delete("delete from orders where order_id= #{id}")
     void delete(Integer id);

@@ -98,4 +98,8 @@ public class OrderController {
     public Result getByTypeAndStatus(HttpServletRequest request){
         return new Result(orderService.allTakeOrderFromServer(request),200,"筛选成功");
     }
+    @PostMapping("/info")
+    public Result getProductInfo(HttpServletRequest request){
+        return new Result(orderService.checkOrder(request),200,"展示成功");
+    }
 }
